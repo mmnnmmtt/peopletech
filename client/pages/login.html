@@ -1,0 +1,19 @@
+<template name="login">
+  <p>
+    Log in to Monument
+  </p>
+
+  {{#if loginError}}
+    <p>{{loginError}}</p>
+  {{/if}}
+
+  <form>
+    Username: <input type="text" name="username" autofocus><br>
+    Password: <input type="password" name="password"><br>
+    <input type="submit" value="Log in">
+  </form>
+
+  <p>
+    <a href="/forgot">Forgot or don't have a password?</a>
+  </p>
+</template>

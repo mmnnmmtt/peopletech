@@ -1,0 +1,42 @@
+<template name="list">
+  Limit by tag (free text) or stage (checkboxes)<br>
+  Search results below with name and picture
+
+  <form>
+    Tags (all must match)<br>
+    <input type="text" name="tags"><br>
+    Status<br>
+    {{#each statuses}}
+      <input type="checkbox" name="status.{{statusName}}" checked>
+        {{statusName}}<br>
+    {{/each}}
+    <input type="submit" value="Filter">
+  </form>
+
+  <br><br>
+
+  {{#if loading}}
+    Loading..
+  {{else}}
+    <table>
+      <thead>
+        <tr>
+          <td>Status</td>
+          <td>Id</td>
+          <td>Name</td>
+          <td>Tags</td>
+        </tr>
+      </thead>
+      <tbody>
+        {{#each matches}}
+          <tr>
+            <td>{{status}}</td>
+            <td>{{relevantId}}</td>
+            <td><a href="/people/{{relevantId}}">{{fullname}}</a></td>
+            <td>{{#each tags}}{{this}} {{/each}}</td>
+          </tr>
+        {{/each}}
+      </tbody>
+    </table>
+  {{/if}}
+</template>

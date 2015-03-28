@@ -1,0 +1,10 @@
+<template name="mainLayout">
+  <a href="/me">Home</a> |
+  <a href="/people/{{currentUser.username}}">{{currentUser.username}}</a> |
+  <a href="/list">Search</a> |
+  <a href="/stats">Stats</a> |
+  <a href="/recommend">Recommend</a> |
+  <input type="text" placeholder="Search.."> |
+  <a href="#" class="logout">Logout</a><br><br>
+  {{> yield}}
+</template>

@@ -1,0 +1,46 @@
+<template name="recommend">
+  <h2>Recommend</h2>
+
+  {{#if recommendError}}
+    <p>{{recommendError}}</p>
+  {{/if}}
+
+  {{#if lastRecommend}}
+    <p>Thanks for recommending {{lastRecommend}}.</p>
+  {{/if}}
+
+  <form>
+    Their name<br><input type="text" name="theirName"><br>
+    {{#unless loggedIn}}
+    Your name: <input type="text" name="yourName"><br>
+    {{/unless}}
+
+    <!--Your advice
+-1: I'm not sure they're right for Monument.
+0: No opinion, just wanted to share a note.
+1: Take a look at them.
+2: Strong contender. Try to get them.
+3: They're one of the most awesome people I've ever met in my whole life.
+-->
+
+    A word or two about them<br><textarea name="comment"></textarea><br>
+    <hr>
+
+    <!--
+        Their contact info
+        Please give us as much as you have. This is critical because we use it to match them up in our database.
+-->
+
+    Emails(s)<br><textarea name="emails"></textarea><br>
+    <!-- Any/all email addresses you have for them, one per line. -->
+    Facebook profile link<br><input type="text" name="facebook"><br>
+    <!-- www.facebook.com/their.name -->
+    LinkedIn profile link<br><input type="text" name="linkedin"><br>
+    <!-- www.linked.com/in/theirname -->
+    Homepage, portfolio, or blog<br><input type="text" name="personal"><br>
+    Twitter name<br><input type="text" name="twitter"><br>
+    Other links (OKCupid, Tumblr, Instagram, Fetlife...)<br><textarea name="otherLinks"></textarea><br>
+    <!-- One per line. These are super helpful, if you've got them. -->
+    <input type="submit" value="Save">
+  </form>
+</template>

@@ -1,0 +1,47 @@
+<template name="profile">
+  <h1>{{fullname}}</h1>
+  {{status}}{{#each tags}} {{this}}{{/each}}<br>
+  nickname {{nickname}}<br>
+  {{#if facebook}}<a href="http://www.facebook.com/{{facebook}}">facebook</a>{{/if}}
+  {{#if linkedin}}<a href="http://www.linkedin.com/in/{{linkedin}}">linkedin</a>{{/if}}
+  {{#if twitter}}<a href="http://www.twitter.com/{{twitter}}">twitter</a>{{/if}}
+  <br>
+  {{#each links}}
+    <a href="{{this}}">{{this}}</a><br>
+  {{/each}}
+
+  <h2>Activity</h2>
+  {{#each stories}}
+  <div>
+    {{#if isComment}}
+      {{#if who}}
+        Comment by {{who}} ({{when}}) {{#if private}}– Private{{/if}}<br>
+      {{else}}
+        Public comment ({{when}})<br>
+      {{/if}}
+      <div>{{comment}}</div>
+    {{else}}
+      Some other story type ({{type}})
+    {{/if}}
+  </div>
+  {{/each}}
+
+  <form class="comment">
+    Write a comment...<br>
+    <textarea name="comment"></textarea><br>
+    <input type="checkbox" name="private">Private to membership committee<br>
+    <input type="submit" value="Comment">
+  </form>
+
+  <h2>Missing features</h2>
+  <ul>
+    <li>referral chain</li>
+    <li>recommended merges</li>
+    <li>edit nickname, social links, etc</li>
+    <li>change status (admin only)</li>
+    <li>archive comments, see archived comments</li>
+    <li>add/remove tags</li>
+    <li>see forms</li>
+    <li>canonicalize links, so they work with or without http prefix</li>
+  </ul>
+</template>
