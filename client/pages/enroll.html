@@ -1,0 +1,16 @@
+<template name="enroll">
+  <p>
+    Welcome, welcome. Time to pick your Monument handle and password.
+  </p>
+
+  {{#if enrollmentError}}
+    <p>{{enrollmentError}}</p>
+  {{/if}}
+
+  <form>
+    Desired handle: <input type="text" name="username" autofocus><br>
+    Desired password: <input type="password" name="password"><br>
+    <input type="submit" value="Join">
+  </form>
+
+</template>

@@ -27,5 +27,12 @@ Template.profile.events({
       comment: event.target.comment.value,
       private: event.target.private.checked
     });
+  },
+  'click .make-member': function (event) {
+    Meteor.call("makeMember", this.username || this.uid,
+                function (err) {
+                  if (err)
+                    alert(err.message);
+                });
   }
 });

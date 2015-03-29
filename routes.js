@@ -10,7 +10,7 @@ Router.onBeforeAction(function () {
   }
 }, {
   except: ['home', 'forgot', 'hello-start', 'hello-page', 'recommend',
-           'create']
+           'create', 'enroll', 'resetPassword']
 });
 
 Router.route('/', {
@@ -18,7 +18,28 @@ Router.route('/', {
 });
 
 Router.route('/forgot', {
-  name: 'forgot'
+  name: 'forgot',
+  action: function () {
+    Session.set("recoverySuccess", null);
+    Session.set("recoveryError", null);
+    this.render();
+  }
+});
+
+Router.route('/resetPassword', {
+  name: 'resetPassword',
+  action: function () {
+    Session.set("resetPasswordError", null);
+    this.render();
+  }
+});
+
+Router.route('/enroll', {
+  name: 'enroll',
+  action: function () {
+    Session.set("enrollmentError", null);
+    this.render();
+  }
 });
 
 Router.route('/hello', {

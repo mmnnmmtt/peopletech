@@ -39,7 +39,6 @@ Accounts.onCreateUser(function (options, user) {
     user.emails.push({ address: email, verified: false });
   });
   // XXX mergeTokens
-  // XXX loginToken
   // XXX referralCode
 
   return user;
@@ -78,9 +77,14 @@ Meteor.methods({
     });
   },
 
-  // XXX verify appropriate login
-  // XXX check inputs
   comment: function (options) {
+    check(options, {
+      person: Match.OneOf(String, Number),
+      private: Boolean,
+      comment: String
+    });
+    var currentUser = checkAccess(this, ["member", "admin"]);
+
     var person = Meteor.users.findOne({ $or: [
       { username: options.person },
       { uid: options.person }
@@ -97,12 +101,94 @@ Meteor.methods({
       archived: false,
       comment: options.comment
     });
+  },
+
+  makeMember: function (who) {
+    check(who, Match.OneOf(String, Number));
+    var currentUser = checkAccess(this, "admin");
+
+    var person = Meteor.users.findOne({ $or: [
+      { username: who },
+      { uid: who }
+    ]});
+    if (! person)
+      throw new Meteor.Error("not-found", "No such person");
+
+    if (! person.emails || ! person.emails.length)
+      throw new Meteor.Error("wrong-state",
+                             "Only people with email addresses " +
+                             "can be membered");
+
+    if (_.contains(["admin", "member"], person.status)) {
+      throw new Meteor.Error("wrong-state", "That person is already a member");
+    }
+
+    Meteor.users.update(person._id, {
+      $set: { status: "member" }
+    });
+
+    Accounts.sendEnrollmentEmail(person._id);
+  },
+
+  setUsername: function (username, params) {
+    check(username, String);
+    params = params || {};
+    check(params, {
+      dryRun: Match.Optional(Boolean)
+    });
+
+    if (! params.dryRun) {
+      var currentUser = checkAccess(this, ["member", "admin"]);
+    }
+
+    if (! username.match(/^[a-z0-9]+$/))
+      throw new Meteor.Error("bad-value",
+                             "Your name must be made up of lowercase " +
+                             "letters and numbers. That's all you get.");
+    if (username.length < 3 || username.length > 15)
+      throw new Meteor.Error("bad-value",
+                             "Your name must be between 3 and 15 characters.");
+
+    if (Meteor.users.findOne({ username: username }))
+      throw new Meteor.Error("taken", "That username is already taken.");
+
+    if (params.dryRun)
+      return;
+
+    Meteor.users.update(currentUser._id, { $set: { username: username } });
+  },
+
+  requestPasswordReset: function (who) {
+    check(who, String);
+
+    var person = Meteor.users.findOne({ $or: [
+      { username: who },
+      { 'emails.address': who }
+    ]});
+
+    if (! person ||
+        ! _.contains(["member", "admin"], person.status)) {
+      // Only members can get password resets. For everyone else, we
+      // pretend they're not in the database. That may change in the
+      // future when candidates can be given passwords to log in (for
+      // RSVPing for events, editing their form, whatever).
+      throw new Meteor.Error("not-found", "Sorry, don't see such an account.");
+    }
+
+    if (! person.username) {
+      // You actually should be setting a username too.
+      Accounts.sendEnrollmentEmail(person._id);
+    } else {
+      // Nah, you just need to recover your password like you said.
+      Accounts.sendResetPasswordEmail(person._id);
+    }
   }
 });
 
-// XXX verify appropriate login
-// XXX check inputs
 Meteor.publish("people", function (searchSpec) {
+  checkAccess(this, ["member", "admin"]);
+  check(searchSpec, MatchSearchSpec);
+
   return Meteor.users.find(searchSpecToSelector(searchSpec),
                            { fields: { fullname: 1, status: 1, tags: 1,
                                        username: 1, uid: 1
@@ -110,9 +196,9 @@ Meteor.publish("people", function (searchSpec) {
 });
 
 
-// XXX verify appropriate login
-// XXX check inputs
 Meteor.publish("person", function (spec) {
+  checkAccess(this, ["member", "admin"]);
+  check(spec, Match.OneOf(String, Number));
   var who;
 
   // Nonreactively resolve to a user id
@@ -148,4 +234,3 @@ Meteor.publish("person", function (spec) {
     Forms.find({ person: who._id })
   ];
 });
-

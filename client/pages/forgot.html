@@ -1,4 +1,18 @@
 <template name="forgot">
-  This will be the forgot password page.<br>
-  Runs standard forgot password flow, OR resends your magic link
+  <h2>Forgot your password?</h2>
+
+  {{#if recoverySuccess}}
+    <p>Check your mail for further instructions.</p>
+  {{else}}
+
+    {{#if recoveryError}}
+      <p>{{recoveryError}}</p>
+    {{/if}}
+
+    <form>
+      Email or username: <input type="text" name="who" autofocus><br>
+      <input type="submit" value="Recover password">
+    </form>
+
+  {{/if}}
 </template>

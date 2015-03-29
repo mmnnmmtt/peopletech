@@ -145,7 +145,8 @@ var parseTwitterAccount = function (entry) {
 
 Meteor.methods({
   importTrelloData: function (data) {
-    // XXX admins only
+    checkAccess(this, "admin");
+
     _.each(data.cards, function (card) {
       if (card.closed)
         return; // archived card
@@ -176,7 +177,6 @@ Meteor.methods({
           m = card.name.match(/^\s*(\S+)/);
           details.nickname = m[1];
         }
-        console.log(card.name, details.nickname);
 
         // Create the user, and set everything but email address
         details.trello = card.id;

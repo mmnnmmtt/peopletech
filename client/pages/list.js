@@ -42,7 +42,5 @@ Template.list.events({
     });
 
     Session.set("currentSearch", searchSpec);
-    console.log(searchSpec);
-    console.log(event.target);
   }
 });

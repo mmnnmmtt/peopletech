@@ -17,9 +17,6 @@ mergeTokens (map from string to true if active, false if declined)
 tags: [String]
 referrer: person _id or null
 referralCode: String (the code they give out to people they want to intro)
-
-If status is 'candidate':
-- loginToken (for magic link)
 */
 Meteor.startup(function () {
   if (Meteor.isServer) {
@@ -85,4 +82,9 @@ searchSpecToSelector = function (searchSpec) {
     selector.tags = { $all: searchSpec.tags };
   selector.status = { $in: searchSpec.status };
   return selector;
+};
+
+MatchSearchSpec = {
+  tags: Match.Optional(Match.OneOf(null, [String])),
+  status: Match.Optional(Match.OneOf(null, [String]))
 };

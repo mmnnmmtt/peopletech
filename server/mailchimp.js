@@ -1,8 +1,3 @@
-/*
-var MAILCHIMP_DC = 'us10';
-var MAILCHIMP_KEY = 'a8d9bf954af01b3bf58f4d7c70676afb-us10';
-*/
-
 var MAILCHIMP_LIST_ID = '6a7063f8fb'; // Friends of Monument
 
 var callMailchimp = function (endpoint, params) {
@@ -27,10 +22,13 @@ var callMailchimp = function (endpoint, params) {
 Meteor.methods({
   setMailchimpAPIKey: function (key) {
     check(key, String);
+    checkAccess(this, "admin");
+
     Config.update({}, { $set: { mailchimpAPIKey: key } });
   },
   syncMailchimp: function () {
-    // XXX admins only
+    checkAccess(this, "admin");
+
     console.log("--- Mailchimp Sync Running ---");
     var result = callMailchimp("lists/list");
 
