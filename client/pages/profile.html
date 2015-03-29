@@ -1,47 +1,110 @@
 <template name="profile">
-  <h1>{{fullname}}</h1>
-  {{status}}{{#each tags}} {{this}}{{/each}}<br>
-  nickname {{nickname}}<br>
-  {{#if facebook}}<a href="http://www.facebook.com/{{facebook}}">facebook</a>{{/if}}
-  {{#if linkedin}}<a href="http://www.linkedin.com/in/{{linkedin}}">linkedin</a>{{/if}}
-  {{#if twitter}}<a href="http://www.twitter.com/{{twitter}}">twitter</a>{{/if}}
-  <br>
-  {{#each links}}
-    <a href="{{this}}">{{this}}</a><br>
-  {{/each}}
+  <div class="row">
+    <!-- Profile -->
+    <div class="col-md-4">
+      <h1>
+        {{fullname}}
+        {{#if nickname}}({{nickname}}){{/if}}
+      </h1>
 
-  <h2>Activity</h2>
-  {{#each stories}}
-  <div>
-    {{#if isComment}}
-      {{#if who}}
-        Comment by {{who}} ({{when}}) {{#if private}}– Private{{/if}}<br>
-      {{else}}
-        Public comment ({{when}})<br>
+      <p>
+        {{status}}
+        &bull;
+        {{#each tags}}
+          <span class="label label-info">{{this}}</span>
+        {{/each}}
+      </p>
+
+      {{#if facebook}}
+        <img src="https://graph.facebook.com/{{facebook}}/picture?width=350&height=350" width=350>
       {{/if}}
-      <div>{{comment}}</div>
-    {{else}}
-      Some other story type ({{type}})
-    {{/if}}
+
+      <dl class="dl-horizontal">
+
+        <dt>Email</dt>
+        <dd>
+          {{#each emails}}
+            {{address}}<br>
+          {{else}}
+            Unknown
+          {{/each}}
+        </dd>
+
+        {{#if facebook}}
+        <dt>Facebook</dt>
+        <dd>
+          <a href="http://www.facebook.com/{{facebook}}" target="_blank">{{facebook}}</a>
+        </dd>
+        {{/if}}
+
+        {{#if linkedin}}
+        <dt>LinkedIn</dt>
+        <dd>
+          <a href="http://www.linkedin.com/{{linkedin}}" target="_blank">{{linkedin}}</a>
+        </dd>
+        {{/if}}
+
+        {{#if twitter}}
+        <dt>Twitter</dt>
+        <dd>
+          <a href="http://www.twitter.com/{{twitter}}" target="_blank">@{{twitter}}</a>
+        </dd>
+        {{/if}}
+
+        {{#if trello}}
+        <dt>Trello</dt>
+        <dd>
+          <a href="http://www.trello.com/c/{{trello}}" target="_blank">card</a>
+        </dd>
+        {{/if}}
+
+        {{#if anyLinks}}
+        <dt>Links</dt>
+        <dd>
+          {{#each links}}
+          <a href="{{resolveLink this}}" target="_blank">{{this}}</a>
+          {{/each}}
+        </dd>
+        {{/if}}
+      </dl>
+
+      <h4>Missing features</h4>
+      <ul>
+        <li>referral chain</li>
+        <li>recommended merges</li>
+        <li>edit nickname, social links, etc</li>
+        <li>change status (admin only)</li>
+        <li>archive comments, see archived comments</li>
+        <li>add/remove tags</li>
+        <li>see forms</li>
+      </ul>
+    </div>
+
+    <!-- Activity -->
+    <div class="col-md-8">
+      <h2>Activity</h2>
+
+      <form class="comment">
+        Write a comment...<br>
+        <textarea name="comment"></textarea><br>
+        <input type="checkbox" name="private">Private to membership committee<br>
+        <input type="submit" value="Comment">
+      </form>
+
+      {{#each stories}}
+        <div>
+          {{#if isComment}}
+            {{#if who}}
+              Comment by {{who}} ({{when}}) {{#if private}}– Private{{/if}}<br>
+            {{else}}
+              Public comment ({{when}})<br>
+            {{/if}}
+            <div>{{comment}}</div>
+          {{else}}
+            Some other story type ({{type}})
+          {{/if}}
+        </div>
+      {{/each}}
+    </div>
   </div>
-  {{/each}}
-
-  <form class="comment">
-    Write a comment...<br>
-    <textarea name="comment"></textarea><br>
-    <input type="checkbox" name="private">Private to membership committee<br>
-    <input type="submit" value="Comment">
-  </form>
-
-  <h2>Missing features</h2>
-  <ul>
-    <li>referral chain</li>
-    <li>recommended merges</li>
-    <li>edit nickname, social links, etc</li>
-    <li>change status (admin only)</li>
-    <li>archive comments, see archived comments</li>
-    <li>add/remove tags</li>
-    <li>see forms</li>
-    <li>canonicalize links, so they work with or without http prefix</li>
-  </ul>
 </template>

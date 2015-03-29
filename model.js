@@ -1,13 +1,14 @@
 /* Meteor.users
 
 _id, username, emails, createdAt, profile, services: per Meteor Accounts
-If 'helper' or 'admin', will have a username and password
+If 'member' or 'admin', will have a username and password
 
 uid: a small integer
 fullname: String
 nickname: String
-status: String (inactive, lead, prospect, helper, admin)
+status: String (inactive, lead, candidate, member, admin)
 facebook, linkedin, twitter: String (username on each service)
+trello: String (id of trello card on recruiting board)
 links: [String]
 mergeTokens (map from string to true if active, false if declined)
   (something like facebook:[username], fullname:[canonicalized name])
@@ -15,7 +16,7 @@ tags: [String]
 referrer: person _id or null
 referralCode: String (the code they give out to people they want to intro)
 
-If status is 'prospect':
+If status is 'candidate':
 - loginToken (for magic link)
 */
 Meteor.startup(function () {
@@ -26,14 +27,15 @@ Meteor.startup(function () {
     Meteor.users._ensureIndex({ tags: 1 });
     Meteor.users._ensureIndex({ referrer: 1 });
     Meteor.users._ensureIndex({ referralCode: 1 });
+    Meteor.users._ensureIndex({ trello: 1 });
   }
 });
 
 STATUSES = [
   "inactive",
   "lead",
-  "prospect",
-  "helper",
+  "candidate",
+  "member",
   "admin"
 ];
 

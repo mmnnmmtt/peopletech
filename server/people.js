@@ -20,13 +20,17 @@ Accounts.onCreateUser(function (options, user) {
   // index on uid will make the insert fail. Good enough for now.
   user.uid = lastUser && (lastUser.uid + 1) || 0;
 
-  delete user.username; // this is not how accounts get usernames
+  if (user.uid !== 0) {
+    delete user.username; // this is not how accounts get usernames
+  }
+
   user.fullname = options.details.fullname;
   user.nickname = options.details.fullname; // XXX take just first word
   user.status = (user.uid === 0) ? "admin" : "lead";
   user.facebook = options.details.facebook;
   user.linkedin = options.details.linkedin;
   user.twitter = options.details.twitter;
+  user.trello = options.details.trello;
   user.links = options.details.links || [];
   user.referrer = options.details.referrer || null;
   user.tags = ["new"];
@@ -124,8 +128,8 @@ Meteor.publish("person", function (spec) {
   return [
     Meteor.users.find(who._id, {
       fields: { fullname: 1, nickname: 1, status: 1, facebook: 1,
-                linkedin: 1, twitter: 1, links: 1, tags: 1, referrer: 1,
-                mergeTokens: 1, username: 1, uid: 1
+                linkedin: 1, twitter: 1, trello: 1, links: 1, tags: 1,
+                referrer: 1, mergeTokens: 1, username: 1, emails: 1, uid: 1
               }
     }),
     /*

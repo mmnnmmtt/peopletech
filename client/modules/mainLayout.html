@@ -1,10 +1,42 @@
 <template name="mainLayout">
-  <a href="/me">Home</a> |
+  <nav class="navbar navbar-default">
+    <div class="container">
+    <ul class="nav navbar-nav">
+      <li class="active"><a href="/me">Home</a></li>
+      <li><a href="/list">Search</a></li>
+      <li><a href="/stats">Stats</a></li>
+      <li><a href="/recommend">Recommend</a></li>
+      <li><a href="/tools">Tools</a></li>
+      <form class="navbar-form navbar-left" role="search">
+        <div class="form-group">
+          <input type="text" class="form-control" placeholder="Search">
+        </div>
+      </form>
+    </ul>
+
+    <p class="navbar-text navbar-right">
+      <span>
+      <a href="/people/{{currentUser.username}}">{{currentUser.username}}</a>
+      <a href="#" class="logout">(Log out)</a>
+      </span>
+    </p>
+    </div>
+
+  </nav>
+
+    <!--
+
+    <a href="/me">Home</a> |
   <a href="/people/{{currentUser.username}}">{{currentUser.username}}</a> |
   <a href="/list">Search</a> |
   <a href="/stats">Stats</a> |
   <a href="/recommend">Recommend</a> |
+  <a href="/tools">Tools</a> |
   <input type="text" placeholder="Search.."> |
   <a href="#" class="logout">Logout</a><br><br>
-  {{> yield}}
+-->
+
+  <div class="container">
+    {{> yield}}
+  </div>
 </template>

@@ -1,6 +1,15 @@
 <template name="recommend">
   <h2>Recommend</h2>
 
+  <div class="panel panel-danger">
+    <div class="panel-heading">
+      <h3 class="panel-title">Hey! Don't Use This</h3>
+    </div>
+    <div class="panel-body">
+      Create a Trello card instead. I think.
+    </div>
+  </div>
+
   {{#if recommendError}}
     <p>{{recommendError}}</p>
   {{/if}}

@@ -4,6 +4,17 @@ Template.profile.helpers({
   },
   isComment: function () {
     return this.type === "comment";
+  },
+  anyLinks: function () {
+    return this.links && this.links.length > 0;
+  },
+  resolveLink: function (link) {
+    // Do the 60 second version instead of the 2 hour version of
+    // linking their text
+    if (link.match(/^http/))
+      return link;
+    else
+      return 'http://' + link;
   }
 });
 

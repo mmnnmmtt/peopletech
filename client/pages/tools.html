@@ -1,0 +1,29 @@
+<head>
+  <script src="https://api.trello.com/1/client.js?key=2bb92628a12963396f43ed5d3e64b8e7"></script>
+</head>
+
+<template name="tools">
+  <div class="panel panel-danger">
+    <div class="panel-heading">
+      <h3 class="panel-title">Irene Only</h3>
+    </div>
+    <div class="panel-body">
+      Don't push these buttons unless you're Irene or otherwise know what
+      you're doing.
+    </div>
+  </div>
+
+  <h2>Trello import</h2>
+  <p>
+    Import people from Trello.
+  </p>
+  <button class="btn btn-default import-trello">Run Trello import</button>
+
+
+  <h2>Mailchimp sync</h2>
+  <p>
+    Overwrite Mailchimp mailing lists based on current database contents.
+    Import people from Trello.
+  </p>
+  <button class="btn btn-default sync-mailchimp">Run Mailchimp sync</button>
+</template>

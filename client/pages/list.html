@@ -1,39 +1,48 @@
 <template name="list">
-  Limit by tag (free text) or stage (checkboxes)<br>
-  Search results below with name and picture
+  <!-- XXX add pictures to search results? -->
+  <div class="well">
+    <form>
+      <div class="form-group">
+        <label for="tagsRequired">Tags (all must match)</label>
+        <input type="text" name="tags" class="form-control" id="tagsRequired">
+      </div>
 
-  <form>
-    Tags (all must match)<br>
-    <input type="text" name="tags"><br>
-    Status<br>
-    {{#each statuses}}
-      <input type="checkbox" name="status.{{statusName}}" checked>
-        {{statusName}}<br>
-    {{/each}}
-    <input type="submit" value="Filter">
-  </form>
+      <div class="form-group">
+        <label>Status</label>
+        {{#each statuses}}
+        <label class="checkbox-inline">
+          <input type="checkbox" name="status.{{statusName}}" checked>
+          {{statusName}}
+        </label>
+        {{/each}}
+      </div>
 
-  <br><br>
+      <button type="submit" class="btn btn-default">Filter</button>
+    </form>
+  </div>
 
   {{#if loading}}
     Loading..
   {{else}}
-    <table>
+    <table class="table table-condensed table-hover">
       <thead>
         <tr>
-          <td>Status</td>
-          <td>Id</td>
-          <td>Name</td>
-          <td>Tags</td>
+          <th class="col-sm-1">Id</th>
+          <th class="col-sm-6">Name</th>
+          <th class="col-sm-4">Tags</th>
+          <th class="col-sm-1">Status</th>
         </tr>
       </thead>
       <tbody>
         {{#each matches}}
           <tr>
-            <td>{{status}}</td>
             <td>{{relevantId}}</td>
             <td><a href="/people/{{relevantId}}">{{fullname}}</a></td>
-            <td>{{#each tags}}{{this}} {{/each}}</td>
+            <td>{{#each tags}}
+              <span class="label label-info">{{this}}</span>
+              {{/each}}
+            </td>
+            <td>{{status}}</td>
           </tr>
         {{/each}}
       </tbody>

@@ -63,7 +63,6 @@ Router.route('/people/:code', {
       code = parseInt(code);
     }
 
-    console.log("got code", JSON.stringify(code));
     var person = Meteor.users.findOne({ $or: [
       { uid: code },
       { username: code }
@@ -120,6 +119,11 @@ Router.onStop(function () {
 
 Router.route('/stats', {
   name: 'stats',
+  layoutTemplate: 'mainLayout'
+});
+
+Router.route('/tools', {
+  name: 'tools',
   layoutTemplate: 'mainLayout'
 });
 
