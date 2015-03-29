@@ -25,7 +25,7 @@ Accounts.onCreateUser(function (options, user) {
   }
 
   user.fullname = options.details.fullname;
-  user.nickname = options.details.fullname; // XXX take just first word
+  user.nickname = options.details.nickname;
   user.status = (user.uid === 0) ? "admin" : "lead";
   user.facebook = options.details.facebook;
   user.linkedin = options.details.linkedin;
@@ -129,7 +129,8 @@ Meteor.publish("person", function (spec) {
     Meteor.users.find(who._id, {
       fields: { fullname: 1, nickname: 1, status: 1, facebook: 1,
                 linkedin: 1, twitter: 1, trello: 1, links: 1, tags: 1,
-                referrer: 1, mergeTokens: 1, username: 1, emails: 1, uid: 1
+                referrer: 1, mergeTokens: 1, username: 1, emails: 1, uid: 1,
+                mailchimpLeid: 1
               }
     }),
     /*

@@ -145,6 +145,7 @@ var parseTwitterAccount = function (entry) {
 
 Meteor.methods({
   importTrelloData: function (data) {
+    // XXX admins only
     _.each(data.cards, function (card) {
       if (card.closed)
         return; // archived card
@@ -164,6 +165,18 @@ Meteor.methods({
           details.twitter = parseTwitterAccount(lines[2]);
           details.links = lines.slice(3)
         }
+
+        // Guess their nickname
+        var m = card.name.match(/\(([^)]+)\)\s*$/);
+        if (m) {
+          // 'Geoffrey Schmidt (Geoff)'
+          details.nickname = m[1];
+        } else {
+          // Just take their first name
+          m = card.name.match(/^\s*(\S+)/);
+          details.nickname = m[1];
+        }
+        console.log(card.name, details.nickname);
 
         // Create the user, and set everything but email address
         details.trello = card.id;
@@ -208,9 +221,17 @@ Meteor.methods({
           unwantedTags.push(tag);
       });
 
+      var fullname = card.name;
+      var m = fullname.match(/^(.*\S)\s*\([^)]+\)\s*$/);
+      if (m) {
+        // Strip "Geoffrey Schmidt (Geoff)" to "Geoffrey Schmidt"
+        // We will have pulled out Geoff as the nickname on initial import
+        fullname = m[1];
+      }
+
       Meteor.users.update(person._id, {
         $set: {
-          fullname: card.name
+          fullname: fullname
         },
         $addToSet: {
           tags: { $each: wantedTags }

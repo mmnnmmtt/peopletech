@@ -4,10 +4,11 @@
     <div class="col-md-4">
       <h1>
         {{fullname}}
-        {{#if nickname}}({{nickname}}){{/if}}
       </h1>
 
       <p>
+        "{{nickname}}"
+        &bull;
         {{status}}
         &bull;
         {{#each tags}}
@@ -51,12 +52,19 @@
         </dd>
         {{/if}}
 
-        {{#if trello}}
-        <dt>Trello</dt>
+        <dt>Monument</dt>
         <dd>
-          <a href="http://www.trello.com/c/{{trello}}" target="_blank">card</a>
+          {{#if trello}}
+            <a href="http://www.trello.com/c/{{trello}}" target="_blank">
+              Trello
+            </a>
+          {{/if}}
+          {{#if mailchimpLeid}}
+            <a href="https://us10.admin.mailchimp.com/lists/members/view?id={{mailchimpLeid}}" target="_blank">
+              Mailchimp
+            </a>
+          {{/if}}
         </dd>
-        {{/if}}
 
         {{#if anyLinks}}
         <dt>Links</dt>

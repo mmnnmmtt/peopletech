@@ -35,5 +35,11 @@ Template.tools.events({
         alert("Bold synchronization was effectuated");
       }
     });
+  },
+  'click .set-mailchimp-api-key': function (evt) {
+    var key = prompt("What is the Mailchimp API key? You can get it at " +
+                     "http://admin.mailchimp.com/account/api");
+    if (key !== null)
+      Meteor.call("setMailchimpAPIKey", key);
   }
 });

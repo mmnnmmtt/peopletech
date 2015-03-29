@@ -10,6 +10,8 @@ status: String (inactive, lead, candidate, member, admin)
 facebook, linkedin, twitter: String (username on each service)
 trello: String (id of trello card on recruiting board)
 links: [String]
+mailchimpLeid: the "leid" (list email id) for them as a subscriber to our
+  mailing list
 mergeTokens (map from string to true if active, false if declined)
   (something like facebook:[username], fullname:[canonicalized name])
 tags: [String]
@@ -62,6 +64,20 @@ type: String (name of form)
 fields: subdocument with form data
 */
 Forms = new Mongo.Collection("forms");
+
+
+/*
+Contains a single record.
+mailchimpAPIKey: String (key for Mailchimp sync feature)
+*/
+Config = new Mongo.Collection("config");
+
+Meteor.startup(function () {
+  if (Meteor.isServer) {
+    if (! Config.findOne())
+      Config.insert({});
+  }
+});
 
 searchSpecToSelector = function (searchSpec) {
   var selector = {};
