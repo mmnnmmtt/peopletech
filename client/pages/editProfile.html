@@ -1,0 +1,90 @@
+<template name="editProfile">
+  <button class="btn btn-default cancel">Back</button>
+
+
+
+  <div class="row">
+    <div class="col-md-6">
+      <h2>Profile</h2>
+
+<form class="form-horizontal editProfile">
+
+  <div class="form-group">
+    <label for="edit-fullname" class="col-sm-3 control-label">Full name</label>
+    <div class="col-sm-6">
+      <input type="text" class="form-control" id="edit-fullname"
+             name="fullname" placeholder="Full name" value={{fullname}}>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label for="edit-nickname" class="col-sm-3 control-label">Nickname</label>
+    <div class="col-sm-6">
+      <input type="text" class="form-control" id="edit-nickname"
+             name="nickname" placeholder="Nickname" value={{nickname}}>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label for="edit-email" class="col-sm-3 control-label">Email</label>
+    <div class="col-sm-6">
+      <input type="email" class="form-control" id="edit-email"
+             name="email" placeholder="Email" value={{firstEmail}}>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label for="edit-facebook" class="col-sm-3 control-label">Facebook</label>
+    <div class="col-sm-6">
+      <input type="text" class="form-control" id="edit-facebook"
+             name="facebook" placeholder="Facebook" value={{facebook}}>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label for="edit-linkedin" class="col-sm-3 control-label">Linkedin</label>
+    <div class="col-sm-6">
+      <input type="text" class="form-control" id="edit-linkedin"
+             name="linkedin" placeholder="Linkedin" value={{linkedin}}>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label for="edit-twitter" class="col-sm-3 control-label">Twitter</label>
+    <div class="col-sm-6">
+      <input type="text" class="form-control" id="edit-twitter"
+             name="twitter" placeholder="Twitter" value={{twitter}}>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <div class="col-sm-offset-3 col-sm-9">
+      <button type="submit" class="btn btn-default">Save</button>
+    </div>
+  </div>
+</form>
+
+</div>
+<div class="col-md-3">
+
+  <h2>Tags</h2>
+  {{#each tags}}
+  <h4>
+    <span class="glyphicon glyphicon-trash remove-tag"></span>
+    <span class="label label-info">{{this}}</span></h4>
+  {{/each}}
+  <button class="btn btn-default add-tag">Add a tag</button>
+
+</div>
+<div class="col-md-3">
+
+  <h2>Links</h2>
+  {{#each links}}
+    <p>{{this}}</p>
+  {{/each}}
+  <button class="btn btn-default addLink">Add a link</button>
+
+</div>
+</div>
+
+</template>

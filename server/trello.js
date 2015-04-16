@@ -2,8 +2,28 @@
 // that the user's card is in. After sync completes, at most one tag
 // will be set on each person (that is currently in Trello).
 var TRELLO_TAGS = {
-  'brunch-email': '550f740db7f193108765be5e', // 'Potential Candidates' list
-  'candidate-email': '5507a8030388e672034a3cd7' // 'Candidate' list
+  'rejected': [
+    "5507c6c03d7f41ecfcbc40ef",
+    "552cb35a486b415b24ba2fba"
+  ],
+  'proposed-rejection': "55172001fbe5502fcc5d3401",
+  'incoming-form': [
+    "552cb1f777621f87c5fe284c",
+    "5507a8018099ba6fdc4610b0"
+  ],
+  '1-public-meet': "550f740db7f193108765be5e",
+  '2-public-know': "552c72b682fa6433582ad61e",
+  '3-small-first': "5507a8030388e672034a3cd7",
+  '4-small-again': "551a09154d7a4e9f3bfebb6d",
+  '5-proposed-member': "552c730757d91ce0b62cdaa7",
+  '6-offered-membership': "5507a7f37b9c69e57a385b84",
+  'member': [
+    "5529b13ab368715fa16c91fe", // don't know residency status
+    "5507c734216ca68c36c7992d", // non-resident member
+    "5507c73d2a3ae47f03fa0a8a", // prospective resident
+    "550dd73a57f26d490c3d8293" // resident
+  ],
+  'future-candidate': "550f75fcc0ea07ed0f9cef3d"
 };
 
 var parseFacebookAccount = function (entry) {
@@ -214,8 +234,10 @@ Meteor.methods({
       // Tags based on Trello lists
       var wantedTags = [];
       var unwantedTags = [];
-      _.each(TRELLO_TAGS, function (listId, tag) {
-        if (card.idList === listId)
+      _.each(TRELLO_TAGS, function (listIds, tag) {
+        if (! _.isArray(listIds))
+          listIds = [listIds];
+        if (_.contains(listIds, card.idList))
           wantedTags.push(tag);
         else
           unwantedTags.push(tag);

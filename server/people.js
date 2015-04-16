@@ -182,6 +182,79 @@ Meteor.methods({
       // Nah, you just need to recover your password like you said.
       Accounts.sendResetPasswordEmail(person._id);
     }
+  },
+
+  updateProfile: function (who, fields) {
+    check(who, Match.OneOf(String, Number));
+    check(fields, {
+      fullname: Match.Optional(String),
+      nickname: Match.Optional(String),
+      email: Match.Optional(String),
+      facebook: Match.Optional(String),
+      linkedin: Match.Optional(String),
+      twitter: Match.Optional(String)
+    });
+    var currentUser = checkAccess(this, ["member", "admin"]);
+
+    var person = Meteor.users.findOne({ $or: [
+      { username: who },
+      { uid: who }
+    ]});
+
+    if (! person)
+      throw new Error("not-found", "No such person");
+
+    if (_.has(fields, 'email')) {
+      var email = fields.email;
+      delete fields.email;
+      if (email !== (person.emails &&
+                     person.emails.length &&
+                     person.emails[0].address)) {
+        // Trying to change the email
+        if (person._id !== currentUser._id &&
+            _.contains(["member", "admin"], person.status) &&
+            currentUser.status !== "admin") {
+          throw new Meteor.Error("access-denied", "Members can only change " +
+                                 "their own email addresses");
+        }
+
+        Meteor.users.update(person._id, {
+          $set: { 'emails.0': { address: email, verified: false } }
+        });
+      }
+    }
+
+    Meteor.users.update(person._id, {
+      $set: fields
+    });
+  },
+
+  removeTag: function (who, tag) {
+    console.log(who, tag);
+    check(who, Match.OneOf(String, Number));
+    check(tag, String);
+
+    var currentUser = checkAccess(this, ["member", "admin"]);
+    var person = Meteor.users.findOne({ $or: [
+      { username: who },
+      { uid: who }
+    ]});
+
+    Meteor.users.update(person._id, { $pull: { tags: tag } });
+  },
+
+  addTag: function (who, tag) {
+    console.log(who, tag);
+    check(who, Match.OneOf(String, Number));
+    check(tag, String);
+
+    var currentUser = checkAccess(this, ["member", "admin"]);
+    var person = Meteor.users.findOne({ $or: [
+      { username: who },
+      { uid: who }
+    ]});
+
+    Meteor.users.update(person._id, { $addToSet: { tags: tag } });
   }
 });
 

@@ -105,7 +105,11 @@ Router.route('/people/:code', {
       }
     }
 
-    this.render('profile', { data: person });
+    if (this.params.query.mode === "edit") {
+      this.render('editProfile', { data: person });
+    } else {
+      this.render('profile', { data: person });
+    }
   }
 });
 

@@ -28,6 +28,9 @@ Template.profile.events({
       private: event.target.private.checked
     });
   },
+  'click .edit': function (event) {
+    Router.go("/people/" + (this.username || this.uid) + "?mode=edit");
+  },
   'click .make-member': function (event) {
     Meteor.call("makeMember", this.username || this.uid,
                 function (err) {
